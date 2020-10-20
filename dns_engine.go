@@ -17,7 +17,7 @@ type DNSEngine struct {
 	networkEngine *NetworkEngine     // networkEngine is constructed from the network rules
 	lookupTable   map[uint32][]int64 // map for hosts hashes mapped to the list of rule indexes
 	rulesStorage  *filterlist.RuleStorage
-	ipEngine      *rules.IPEngine
+	IPEngine      *rules.IPEngine
 	IPRules       *rules.IPRule
 }
 
@@ -26,6 +26,7 @@ type DNSResult struct {
 	NetworkRule *rules.NetworkRule // a network rule or nil
 	HostRulesV4 []*rules.HostRule  // host rules for IPv4 or nil
 	HostRulesV6 []*rules.HostRule  // host rules for IPv6 or nil
+	IPRule      *rules.IPRule
 }
 
 // DNSRequest represents a DNS query with associated metadata.
@@ -127,9 +128,9 @@ func (d *DNSEngine) MatchRequest(dReq DNSRequest) (DNSResult, bool) {
 		return DNSResult{NetworkRule: networkRule}, true
 	}
 	if dReq.Answer {
-		ie, ok := d.ipEngine.Match(dReq.Hostname)
+		ie, ok := d.IPEngine.Match(dReq.Hostname)
 		if ok {
-			return DNSResult{IPRules: ie}, true
+			return DNSResult{IPRule: ie}, true
 		}
 	}
 
