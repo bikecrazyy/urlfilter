@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/AdguardTeam/urlfilter/filterlist"
+	"github.com/bikecrazyy/urlfilter/filterlist"
 
-	"github.com/AdguardTeam/urlfilter/filterutil"
+	"github.com/bikecrazyy/urlfilter/filterutil"
 
 	"github.com/AdguardTeam/golibs/log"
 	"github.com/stretchr/testify/assert"

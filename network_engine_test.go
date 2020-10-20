@@ -13,9 +13,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/AdguardTeam/urlfilter/filterlist"
+	"github.com/bikecrazyy/urlfilter/filterlist"
 
-	"github.com/AdguardTeam/urlfilter/rules"
+	"github.com/bikecrazyy/urlfilter/rules"
 
 	"github.com/AdguardTeam/golibs/log"
 	"github.com/shirou/gopsutil/process"

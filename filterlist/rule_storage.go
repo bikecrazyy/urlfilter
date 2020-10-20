@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/AdguardTeam/urlfilter/rules"
+	"github.com/bikecrazyy/urlfilter/rules"
 
 	"github.com/AdguardTeam/golibs/log"
 	"github.com/joomcode/errorx"

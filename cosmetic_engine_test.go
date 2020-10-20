@@ -5,7 +5,7 @@ import (
 	"log"
 	"testing"
 
-	"github.com/AdguardTeam/urlfilter/filterlist"
+	"github.com/bikecrazyy/urlfilter/filterlist"
 
 	"github.com/stretchr/testify/assert"
 )

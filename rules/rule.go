@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	// "github.com/AdguardTeam/urlfilter/filterutil"
+	// "github.com/bikecrazyy/urlfilter/filterutil"
 	"github.com/bikecrazyy/urlfilter/filterutil"
 )
 

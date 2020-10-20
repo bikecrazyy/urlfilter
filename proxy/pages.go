@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/AdguardTeam/urlfilter/rules"
+	"github.com/bikecrazyy/urlfilter/rules"
 
 	"github.com/AdguardTeam/gomitmproxy/proxyutil"
 

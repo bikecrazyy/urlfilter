@@ -11,6 +11,7 @@ require (
 	github.com/joomcode/errorx v1.0.1
 	github.com/shirou/gopsutil v2.20.3+incompatible
 	github.com/stretchr/testify v1.5.1
+	github.com/yl2chen/cidranger v1.0.2
 	golang.org/x/net v0.0.0-20200324143707-d3edc9973b7e
 	golang.org/x/sys v0.0.0-20200331124033-c3d80250170d // indirect
 )

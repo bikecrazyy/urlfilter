@@ -3,7 +3,7 @@ package rules
 import (
 	"strings"
 
-	"github.com/AdguardTeam/urlfilter/filterutil"
+	"github.com/bikecrazyy/urlfilter/filterutil"
 
 	"golang.org/x/net/publicsuffix"
 )

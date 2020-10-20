@@ -4,8 +4,8 @@ import (
 	"math"
 	"strings"
 
-	// "github.com/AdguardTeam/urlfilter/filterlist"
-	// "github.com/AdguardTeam/urlfilter/rules"
+	// "github.com/bikecrazyy/urlfilter/filterlist"
+	// "github.com/bikecrazyy/urlfilter/rules"
 	"github.com/bikecrazyy/urlfilter/filterlist"
 	"github.com/bikecrazyy/urlfilter/rules"
 )

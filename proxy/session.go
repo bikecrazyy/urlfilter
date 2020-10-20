@@ -7,7 +7,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/AdguardTeam/urlfilter/rules"
+	"github.com/bikecrazyy/urlfilter/rules"
 )
 
 // Session contains all the necessary data to filter requests and responses.

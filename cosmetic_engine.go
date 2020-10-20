@@ -1,8 +1,8 @@
 package urlfilter
 
 import (
-	"github.com/AdguardTeam/urlfilter/filterlist"
-	"github.com/AdguardTeam/urlfilter/rules"
+	"github.com/bikecrazyy/urlfilter/filterlist"
+	"github.com/bikecrazyy/urlfilter/rules"
 )
 
 // CosmeticEngine combines all the cosmetic rules and allows to quickly

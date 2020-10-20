@@ -7,11 +7,11 @@ import (
 	"net/http"
 	"text/template"
 
-	"github.com/AdguardTeam/urlfilter/rules"
+	"github.com/bikecrazyy/urlfilter/rules"
 
 	"github.com/AdguardTeam/golibs/log"
 	"github.com/AdguardTeam/gomitmproxy/proxyutil"
-	"github.com/AdguardTeam/urlfilter"
+	"github.com/bikecrazyy/urlfilter"
 )
 
 // This code is to be injected in the page

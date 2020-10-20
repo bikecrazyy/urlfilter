@@ -5,7 +5,7 @@ import (
 	"net"
 	"regexp"
 
-	// "github.com/AdguardTeam/urlfilter/filterutil"
+	// "github.com/bikecrazyy/urlfilter/filterutil"
 	"github.com/bikecrazyy/urlfilter/filterutil"
 
 	"github.com/yl2chen/cidranger"

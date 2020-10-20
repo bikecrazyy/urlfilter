@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/AdguardTeam/urlfilter/rules"
+	"github.com/bikecrazyy/urlfilter/rules"
 )
 
 // Suppress cache during the first minutes from the startup

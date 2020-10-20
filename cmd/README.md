@@ -4,17 +4,17 @@ This is a MITM proxy that is able to apply AdGuard content blocking rules to the
 
 Here's what you'll need to build and run the proxy:
 
-* go v1.13 or newer
-* openssl (or any other tool to generate the root CA)
+- go v1.13 or newer
+- openssl (or any other tool to generate the root CA)
 
 > **Limitations**
 > Please note, that at the time of writing, the library is limited to a subset of AdGuard content blocking rules.
-Check out the TODO list in the main README to find out what exactly is missing. 
+> Check out the TODO list in the main README to find out what exactly is missing.
 
 ## How to build
 
 ```bash
-git clone https://github.com/AdguardTeam/urlfilter
+git clone https://github.com/bikecrazyy/urlfilter
 cd urlfilter/cmd
 go build -o adguard
 ```
@@ -38,14 +38,14 @@ openssl req -new -x509 -key demo.key -out root.crt
 
 1. On the Windows computer, start MMC (mmc.exe).
 2. Add the Certificates snap-in for the computer account and manage certificates for the local computer.
-2. Import the root CA certificate into Trusted Root Certification Authorities > Certificates.
+3. Import the root CA certificate into Trusted Root Certification Authorities > Certificates.
 
 #### Mac
 
-1. Double-click the `root.crt` CA certificate to open it in Keychain Access. 
-    * The root CA certificate appears in login.
-2. (Optional) Copy the root CA certificate to System. 
-    * This step is necessary only if you want all users to trust the certificate.
+1. Double-click the `root.crt` CA certificate to open it in Keychain Access.
+   - The root CA certificate appears in login.
+2. (Optional) Copy the root CA certificate to System.
+   - This step is necessary only if you want all users to trust the certificate.
 3. Open the root CA certificate, expand "Trust", select "Use System Defaults", and save your changes.
 4. Reopen the root CA certificate, expand "Trust", select "Always Trust", and save your changes.
 5. (Optional, only if you did step 2) Delete the root CA certificate from login.
@@ -56,6 +56,7 @@ Please note, that at the current moment, AdGuard urlfilter supports a limited su
 Commands below download the versions of AdGuard filter lists that are compatible with AdGuard urlfilter.
 
 These commands download AdGuard Base filter, Tracking Protection filter, and Social widgets filter.
+
 ```bash
 curl http://filters.adtidy.org/extension/android-content-blocker/filters/2.txt > adguard_base.txt
 curl http://filters.adtidy.org/extension/android-content-blocker/filters/3.txt > adguard_tracking_protection.txt
@@ -77,7 +78,7 @@ curl http://filters.adtidy.org/extension/android-content-blocker/filters/4.txt >
 
 You can use your browser settings to do this.
 
-Alternatively, you can use a browser extension like [SwitchyOmega](https://github.com/FelisCatus/SwitchyOmega) 
+Alternatively, you can use a browser extension like [SwitchyOmega](https://github.com/FelisCatus/SwitchyOmega)
 that allows you to quickly enable or disable proxy, or even configure an HTTPS proxy (read below how to run AdGuard urlfilter proxy in this mode).
 
 ## Securing the proxy
@@ -86,14 +87,14 @@ If you're running this proxy on a public server, most likely you'd like to secur
 
 There are two things you can do:
 
-* Proxy authentication.
-    Configure username and password to make sure there can be no unauthorized use of the proxy.
-* HTTPS proxy.
-    You can run the proxy as an HTTPS (HTTP over TLS) proxy to make sure 
-    that your connection to it stays secure, and no one can see what's inside.
-    In this case, the proxy will use your custom root certificate to 
-    generate a new HTTPS certificate, that will be used to encrypt the traffic.
-    
+- Proxy authentication.
+  Configure username and password to make sure there can be no unauthorized use of the proxy.
+- HTTPS proxy.
+  You can run the proxy as an HTTPS (HTTP over TLS) proxy to make sure
+  that your connection to it stays secure, and no one can see what's inside.
+  In this case, the proxy will use your custom root certificate to
+  generate a new HTTPS certificate, that will be used to encrypt the traffic.
+
 **Example:**
 
 ```bash

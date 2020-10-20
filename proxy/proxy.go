@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/AdguardTeam/urlfilter/filterlist"
+	"github.com/bikecrazyy/urlfilter/filterlist"
 
 	"github.com/AdguardTeam/golibs/log"
 	"github.com/AdguardTeam/gomitmproxy"
-	"github.com/AdguardTeam/urlfilter"
+	"github.com/bikecrazyy/urlfilter"
 )
 
 const sessionPropKey = "session"

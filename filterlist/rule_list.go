@@ -9,7 +9,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/AdguardTeam/urlfilter/rules"
+	"github.com/bikecrazyy/urlfilter/rules"
 )
 
 // On Linux the size of the data block is usually 4KB
