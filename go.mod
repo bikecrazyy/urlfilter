@@ -1,4 +1,4 @@
-module github.com/AdguardTeam/urlfilter
+module github.com/bikecrazyy/urlfilter
 
 go 1.14
 
