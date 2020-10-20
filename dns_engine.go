@@ -1,8 +1,11 @@
 package urlfilter
 
 import (
-	"github.com/AdguardTeam/urlfilter/filterlist"
-	"github.com/AdguardTeam/urlfilter/rules"
+	// "github.com/AdguardTeam/urlfilter/filterlist"
+	// "github.com/AdguardTeam/urlfilter/rules"
+
+	"github.com/bikecrazyy/urlfilter/filterlist"
+	"github.com/bikecrazyy/urlfilter/rules"
 )
 
 // DNSEngine combines host rules and network rules and is supposed to quickly find
@@ -14,6 +17,8 @@ type DNSEngine struct {
 	networkEngine *NetworkEngine     // networkEngine is constructed from the network rules
 	lookupTable   map[uint32][]int64 // map for hosts hashes mapped to the list of rule indexes
 	rulesStorage  *filterlist.RuleStorage
+	ipEngine      *rules.IPEngine
+	IPRules       *rules.IPRule
 }
 
 // DNSResult - the return value of Match() function
@@ -38,11 +43,13 @@ type DNSRequest struct {
 func NewDNSEngine(s *filterlist.RuleStorage) *DNSEngine {
 	// At first, we count rules in the rule storage so that we could pre-allocate lookup tables
 	// Surprisingly, this helps us save a lot on allocations
-	var hostRulesCount, networkRulesCount int
+	var ipRulesCount, hostRulesCount, networkRulesCount int
 	scan := s.NewRuleStorageScanner()
 	for scan.Scan() {
 		f, _ := scan.Rule()
-		if hostRule, ok := f.(*rules.HostRule); ok {
+		if _, ok := f.(*rules.IPRule); ok {
+			ipRulesCount++
+		} else if hostRule, ok := f.(*rules.HostRule); ok {
 			hostRulesCount += len(hostRule.Hostnames)
 		} else if _, ok := f.(*rules.NetworkRule); ok {
 			networkRulesCount++
@@ -62,13 +69,16 @@ func NewDNSEngine(s *filterlist.RuleStorage) *DNSEngine {
 		shortcutsLookupTable: make(map[uint32][]int64, networkRulesCount),
 		shortcutsHistogram:   make(map[uint32]int, 0),
 	}
+	ipEngine := &rules.IPEngine{}
 
 	// Go through all rules in the storage and add them to the lookup tables
 	scanner := s.NewRuleStorageScanner()
 	for scanner.Scan() {
 		f, idx := scanner.Rule()
 
-		if hostRule, ok := f.(*rules.HostRule); ok {
+		if ipRule, ok := f.(*rules.IPRule); ok {
+			ipEngine.AddRule(ipRule)
+		} else if hostRule, ok := f.(*rules.HostRule); ok {
 			d.addRule(hostRule, idx)
 		} else if networkRule, ok := f.(*rules.NetworkRule); ok {
 			if networkRule.IsHostLevelNetworkRule() {
@@ -77,8 +87,9 @@ func NewDNSEngine(s *filterlist.RuleStorage) *DNSEngine {
 		}
 	}
 
-	d.RulesCount += networkEngine.RulesCount
+	d.RulesCount += networkEngine.RulesCount + ipEngine.RulesCount
 	d.networkEngine = networkEngine
+	d.IPEngine = ipEngine
 	return &d
 }
 
@@ -114,6 +125,12 @@ func (d *DNSEngine) MatchRequest(dReq DNSRequest) (DNSResult, bool) {
 	if ok {
 		// Network rules always have higher priority
 		return DNSResult{NetworkRule: networkRule}, true
+	}
+	if dReq.Answer {
+		ie, ok := d.ipEngine.Match(dReq.Hostname)
+		if ok {
+			return DNSResult{IPRules: ie}, true
+		}
 	}
 
 	rr, ok := d.matchLookupTable(dReq.Hostname)

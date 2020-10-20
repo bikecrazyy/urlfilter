@@ -1,6 +1,14 @@
 package filterutil
 
-import "strings"
+import (
+	"encoding/binary"
+	"errors"
+	"log"
+	"math"
+	"net"
+	"strconv"
+	"strings"
+)
 
 // ExtractHostname -- quickly retrieves hostname from an URL
 func ExtractHostname(url string) string {
@@ -135,4 +143,80 @@ func IsDomainName(name string) bool {
 	}
 
 	return true
+}
+
+var cidrToMask = []uint32{
+	0x00000000, 0x80000000, 0xC0000000,
+	0xE0000000, 0xF0000000, 0xF8000000,
+	0xFC000000, 0xFE000000, 0xFF000000,
+	0xFF800000, 0xFFC00000, 0xFFE00000,
+	0xFFF00000, 0xFFF80000, 0xFFFC0000,
+	0xFFFE0000, 0xFFFF0000, 0xFFFF8000,
+	0xFFFFC000, 0xFFFFE000, 0xFFFFF000,
+	0xFFFFF800, 0xFFFFFC00, 0xFFFFFE00,
+	0xFFFFFF00, 0xFFFFFF80, 0xFFFFFFC0,
+	0xFFFFFFE0, 0xFFFFFFF0, 0xFFFFFFF8,
+	0xFFFFFFFC, 0xFFFFFFFE, 0xFFFFFFFF,
+}
+
+// IPv4RangeToCIDR -- creates a IPv4 CIDR range from two ips
+func IPv4RangeToCIDR(start, end net.IP) ([]net.IPNet, error) {
+	startAddr, err := IPv4ToLong(start)
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+	endAddr, err := IPv4ToLong(end)
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+
+	if startAddr > endAddr {
+		return []net.IPNet{}, errors.New("start of IP range must be less than the end")
+	}
+
+	var cidrList []net.IPNet
+
+	for i := endAddr; i >= startAddr; i-- {
+		maxSize := 32
+		for j := maxSize; j > 0; j-- {
+			mask := cidrToMask[maxSize-1]
+			maskedBase := startAddr & mask
+
+			if maskedBase != startAddr {
+				break
+			}
+
+			maxSize--
+		}
+
+		x := math.Log(float64(endAddr-startAddr+1)) / math.Log(2)
+		maxDiff := int(32) - int(math.Floor(x))
+		if maxSize < maxDiff {
+			maxSize = maxDiff
+		}
+
+		_, n, _ := net.ParseCIDR(LongToIPv4(startAddr) + "/" + strconv.Itoa(maxSize))
+
+		cidrList = append(cidrList, *n)
+
+		startAddr += uint32(math.Pow(2, float64(32-maxSize)))
+	}
+	return cidrList, nil
+}
+
+// IPv4ToLong -- creates a long from a IPv4
+func IPv4ToLong(ip net.IP) (uint32, error) {
+	ip = ip.To4()
+	if ip == nil {
+		return 0, errors.New("ip must be a ipv4 address")
+	}
+	return binary.BigEndian.Uint32(ip), nil
+}
+
+// LongToIPv4 -- creates a IPv4 from a long
+func LongToIPv4(ipl uint32) string {
+	ipb := make([]byte, 4)
+	binary.BigEndian.PutUint32(ipb, ipl)
+	ip := net.IP(ipb)
+	return ip.String()
 }

@@ -6,7 +6,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/AdguardTeam/urlfilter/filterutil"
+	// "github.com/AdguardTeam/urlfilter/filterutil"
+	"github.com/bikecrazyy/urlfilter/filterutil"
 )
 
 // RuleSyntaxError represents an error while parsing a filtering rule
@@ -45,6 +46,13 @@ func NewRule(line string, filterListID int) (Rule, error) {
 
 	if isCosmetic(line) {
 		return NewCosmeticRule(line, filterListID)
+	}
+	//todo: look for IP range blacklist
+	r, err := NewIPRule(line, filterListID)
+
+	//todo: comment
+	if err == nil {
+		return r, nil
 	}
 
 	f, err := NewHostRule(line, filterListID)
